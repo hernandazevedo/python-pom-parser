@@ -14,7 +14,7 @@ grpId = root.find(pre + "groupId")
 
 
 
-grpId.text = "com.localiza.localizamais3"
+grpId.text = "com.company.newname"
 logging.info("Item: %s", grpId)
 
  
