@@ -5,7 +5,7 @@
   <!-- that they should prefer consuming it instead. -->
   <!-- do_not_remove: published-with-gradle-metadata -->
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.localiza.localizamais2</groupId>
+  <groupId>com.localiza.localizamais3</groupId>
   <artifactId>localiza-mais-android</artifactId>
   <version>0.0.1-rc1</version>
   <packaging>aar</packaging>
