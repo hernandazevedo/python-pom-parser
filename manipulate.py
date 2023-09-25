@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ElementTree
 import logging
 namespace = 'http://maven.apache.org/POM/4.0.0'
-filename = 'beagle-android.pom'
+filename = 'pom.pom'
 
 parser = ElementTree.XMLParser(target=ElementTree.TreeBuilder(insert_comments=True))
 
@@ -14,8 +14,8 @@ grpId = root.find(pre + "groupId")
 
 
 
-grpId.text = "com.localiza.localizamais"
+grpId.text = "com.localiza.localizamais2"
 logging.info("Item: %s", grpId)
 
  
-tree.write('beagle-android.pom.tmp')
+tree.write(filename+".tmp")
