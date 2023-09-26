@@ -1,17 +1,20 @@
 import argparse
 from pathlib import Path
-
-
+from typing import Any
 from lib import adjustPom
  
-parser = argparse.ArgumentParser(description="Maven pom adjustments for publishing flutter modules on a maven repository ",
+argumentParser = argparse.ArgumentParser(description="Maven pom adjustments for publishing flutter modules on a maven repository ",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("-f", "--folder", help="Root folder to lookup for pom files", required=True)
-parser.add_argument("-g", "--groupId", help="GroupId to replace on pom files")
+argumentParser.add_argument("-f", "--folder", help="Root folder to lookup for pom files", required=True)
+argumentParser.add_argument("-g", "--groupId", help="GroupId to replace on pom files", required=True)
+argumentParser.add_argument("-m", "--moduleName", help="ArtifactId of the main module to replace the artifact name", required=True)
+argumentParser.add_argument("-v", "--version", help="Version for the plugins", required=True)
 
-args = parser.parse_args()
+args = argumentParser.parse_args()
 config = vars(args)
 
-for path in Path(config.get("folder")).rglob('*.pom'):
-    adjustPom(filename=str(path.absolute()), newGroupId=config.get("groupId"))
+def main(config: dict[str, Any]):
+    for path in Path(config.get("folder")).rglob('*.pom'):
+        adjustPom(filename=str(path.absolute()), newGroupId=config.get("groupId"))
 
+main(config)
