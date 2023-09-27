@@ -1,9 +1,8 @@
 import argparse
 from glob import glob
 import os
-from lib import Pom, adjustPom, Config, getElementTree
+from lib import findFiles, Pom, adjustPom, Config, getElementTree
 import xml.etree.ElementTree as ET
-
 
 argumentParser = argparse.ArgumentParser(description="Maven pom adjustments for publishing flutter modules on a maven repository ",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -21,14 +20,14 @@ dictionary = vars(args)
 def main(config):
     pomList = list()
 
-    for path in glob(os.path.join('{folder}/**/*.pom'.format(folder=config.folder)), recursive=True):
+    for path in findFiles(config.folder, '*.pom'):
         pomList.append(Pom(tree=getElementTree(pomFile=path), pomFile=path))
 
-    for pom in pomList:    
+    for pom in pomList:
         adjustPom(pom=pom, pomList=pomList, config=config)
 
     #Writing trees on respective files
-    for pom in pomList:    
+    for pom in pomList:
         pom.tree.write(pom.pomFile + ".tmp")
 
 main(Config(dictionary))

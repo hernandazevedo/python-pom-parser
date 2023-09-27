@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import os, fnmatch
 
 NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 PRE = "{" + NAMESPACE +"}"
@@ -63,3 +64,10 @@ def adjustPom(pom, pomList, config) :
     else:
         version.text = config.pluginVersion
         adjustPomDependencies(artifactId=artifactId, pomList=pomList, config=config)
+
+def findFiles(directory, pattern):
+    for root, dirs, files in os.walk(directory):
+        for basename in files:
+            if fnmatch.fnmatch(basename, pattern):
+                filename = os.path.join(root, basename)
+                yield filename        
