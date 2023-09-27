@@ -26,8 +26,18 @@ class Config:
     def toString(self): return """Config(folder: {folder}, groupId: {groupId}, moduleName: {moduleName}, moduleVersion: {moduleVersion}, pluginVersion: {pluginVersion}, pluginGroupId: {pluginGroupId} )
     """.format(folder = self.folder, groupId = self.groupId, moduleName = self.moduleName, moduleVersion = self.moduleVersion, pluginVersion = self.pluginVersion, pluginGroupId = self.pluginGroupId)   
 
+class CommentedTreeBuilder(ET.XMLTreeBuilder):
+    def __init__(self, *args, **kwargs):
+        super(CommentedTreeBuilder, self).__init__(*args, **kwargs)
+        self._parser.CommentHandler = self.comment
+
+    def comment(self, data):
+        self._target.start(ET.Comment, {})
+        self._target.data(data)
+        self._target.end(ET.Comment)
+
 def getElementTree(pomFile):
-    parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
+    parser = CommentedTreeBuilder()
     ET.register_namespace('', NAMESPACE) 
     tree = ET.parse(pomFile, parser)
     return tree
