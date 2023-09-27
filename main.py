@@ -1,9 +1,10 @@
 import argparse
-from pathlib import Path
-from lib import Pom, adjustPom,Config, getElementTree
+from glob import glob
+import os
+from lib import Pom, adjustPom, Config, getElementTree
 import xml.etree.ElementTree as ET
 
- 
+
 argumentParser = argparse.ArgumentParser(description="Maven pom adjustments for publishing flutter modules on a maven repository ",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 argumentParser.add_argument("-f", "--folder", help="Root folder to lookup for pom files", required=True)
@@ -16,18 +17,18 @@ argumentParser.add_argument("-pg", "--pluginGroupId", help="GroupId for the plug
 args = argumentParser.parse_args()
 dictionary = vars(args)
 
-#Example: python index.py --folder repo --groupId "com.sample3" --moduleName "mymodulename" --moduleVersion "0.0.1-rc1" --pluginVersion "0.0.1"
-def main(config: Config):
-    pomList: list[Pom] = list()
-    for path in Path(config.folder).rglob('*.pom'):
-        pomFile = str(path.absolute())
-        pomList.append(Pom(tree=getElementTree(pomFile=pomFile), pomFile=pomFile))
+#Example: python main.py --folder repo --groupId "com.sample3" --moduleName "mymodulename" --moduleVersion "0.0.1-rc1" --pluginVersion "0.0.1"
+def main(config):
+    pomList = list()
+
+    for path in glob(os.path.join('{folder}/**/*.pom'.format(folder=config.folder)), recursive=True):
+        pomList.append(Pom(tree=getElementTree(pomFile=path), pomFile=path))
 
     for pom in pomList:    
         adjustPom(pom=pom, pomList=pomList, config=config)
 
     #Writing trees on respective files
     for pom in pomList:    
-            pom.tree.write(pom.pomFile +".tmp")
+        pom.tree.write(pom.pomFile + ".tmp")
 
 main(Config(dictionary))
