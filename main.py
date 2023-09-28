@@ -16,7 +16,6 @@ argumentParser.add_argument("-pg", "--pluginGroupId", help="GroupId for the plug
 args = argumentParser.parse_args()
 dictionary = vars(args)
 
-#Example: python main.py --folder repo --groupId "com.sample3" --moduleName "mymodulename" --moduleVersion "0.0.1-rc1" --pluginVersion "0.0.1"
 def main(config):
     pomList = list()
 
